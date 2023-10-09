@@ -9,16 +9,27 @@ function SignIn(){
     password: ''
   })
 
+  const [error, setError] = useState(``);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('', values)
-    .then(res => console.log(res))
+    axios.post('http://localhost:7000/signIn', values)
+    .then(res => {
+      if(res.data.Status === "Success"){
+
+      }else {
+          setError(res.data.Error);
+      }
+    })
     .catch(err => console.log(err))
   }
 
   return(
     <div className='d-flex justify-content-center align-items-center vh-100 signinPage'>
         <div className='bg-white p-3 rounded w-25 border signinForm'>
+          <div className='text-danger'>
+            {error && error}
+          </div>
             <h2>Sign In</h2>
             <form onSubmit={handleSubmit}>
                 <div className='mb-3'>

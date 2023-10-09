@@ -21,8 +21,11 @@ app.use(express.json())
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: ""
+    password: "JY@class4579",
+    database: "members"
 });
+
+
 
 con.connect(function(err){
     if(err){
@@ -31,6 +34,19 @@ con.connect(function(err){
         console.log("Connected");
     }
 });
+
+app.post('/signIn', (req, res) =>{
+
+    const sql = "SELECT * FROM members WHERE email = ? AND password = ?";
+    con.query(sql, [req.body.email, req.body.password], (err, result) =>{
+        if(err) return res.json({Status: "Error"});
+        if(result.length > 0){
+            return res.json({Status: "Success"})
+        } else {
+            return res.json({Status: "Error"});
+        }
+    })
+})
 
 app.listen(7000, () => {
     console.log("Running");
